@@ -1,6 +1,5 @@
 h1 {
-  color: rgb(253, 5, 5);
-  background-color: rgb(44, 18, 102);
+  color: rgb(231, 172, 95);
 }
 
 #buttonContainer {
@@ -21,4 +20,9 @@ h1 {
   width: 20px;
   height: 20px;
   cursor: pointer;
+}
+
+body {
+  background-image: url('neutralcolors.jpg');
+  background-size: cover;
 }
