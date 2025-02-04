@@ -1,41 +1,75 @@
-// console.log('My code is running');
+document.getElementById("submitBtn").addEventListener("click", addTask);
+document.getElementById("textInput").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        addTask();
+    }
+});
 
-document.getElementById("submitBtn").addEventListener("click", function() {
-  const textValue = document.getElementById("textInput").value;
+// Load tasks from localStorage on page load
+document.addEventListener("DOMContentLoaded", loadTasks);
+
+function addTask() {
+    const textValue = document.getElementById("textInput").value;
     if (textValue.trim() === "") return;
 
-  const wrapper = document.createElement("div");
+    const task = {
+        text: textValue,
+        completed: false
+    };
+
+    saveTask(task);
+    renderTask(task);
+
+    document.getElementById("textInput").value = "";
+}
+
+function renderTask(task) {
+    const wrapper = document.createElement("div");
     wrapper.classList.add("tasktexttotheside");
 
-  const NewButton = document.createElement("button");
-    NewButton.textContent = " ";
-    NewButton.classList.add("taskbutton");
+    const newButton = document.createElement("button");
+    newButton.textContent = task.completed ? "X" : "";
+    newButton.classList.add("taskbutton");
 
     const textNode = document.createElement("span");
-    textNode.textContent = textValue;
+    textNode.textContent = task.text;
 
-  // const textNode = document.createTextNode(" " + textValue);
+    if (task.completed) {
+        textNode.classList.add("strikethrough");
+    }
 
-  const container = document.getElementById("buttonContainer").appendChild(wrapper);
-    container.appendChild(NewButton);
-    container.appendChild(textNode);
+    newButton.addEventListener("click", function () {
+        task.completed = !task.completed;
+        textNode.classList.toggle("strikethrough");
+        newButton.textContent = task.completed ? "X" : "";
+        updateLocalStorage();
+    });
 
+    wrapper.appendChild(newButton);
+    wrapper.appendChild(textNode);
+    document.getElementById("buttonContainer").appendChild(wrapper);
+}
 
-NewButton.addEventListener("click", function() {
-  textNode.classList.toggle("strikethrough");
+function saveTask(task) {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-  if (NewButton.textContent === " ") {
-    NewButton.textContent = "X";
-  } else {
-    NewButton.textContent = " ";
-  }
-});
+function loadTasks() {
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.forEach(renderTask);
+}
 
-  wrapper.appendChild(NewButton);
-  wrapper.appendChild(textNode);
+function updateLocalStorage() {
+    let taskElements = document.querySelectorAll(".tasktexttotheside");
+    let tasks = [];
 
-document.getElementById("buttonContainer").appendChild(wrapper);
+    taskElements.forEach(wrapper => {
+        const text = wrapper.querySelector("span").textContent;
+        const completed = wrapper.querySelector("button").textContent === "X";
+        tasks.push({ text, completed });
+    });
 
-document.getElementById("textInput").value = "";
-
-});
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
