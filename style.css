@@ -1,3 +1,24 @@
 h1 {
-  color: purple;
+  color: rgb(253, 5, 5);
+  background-color: rgb(44, 18, 102);
+}
+
+#buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.tasktexttotheside {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tasks {
+  margin: 5px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
 }
