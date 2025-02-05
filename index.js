@@ -1,3 +1,4 @@
+// calling both submit button and text box and assigning it to a function called addTask
 document.getElementById("submitBtn").addEventListener("click", addTask);
 document.getElementById("textInput").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
@@ -5,13 +6,16 @@ document.getElementById("textInput").addEventListener("keydown", function (event
     }
 });
 
-// Load tasks from localStorage on page load
+// keeps stuff loaded thusfar
 document.addEventListener("DOMContentLoaded", loadTasks);
 
+// calling the addTask fuction previously mentioned and ensuring that itdoesn't apply blank inputs
 function addTask() {
     const textValue = document.getElementById("textInput").value;
     if (textValue.trim() === "") return;
 
+
+// creating a variable called task and saving after reload
     const task = {
         text: textValue,
         completed: false
@@ -23,10 +27,12 @@ function addTask() {
     document.getElementById("textInput").value = "";
 }
 
+// ensures the text inputed appears to the side of the task button
 function renderTask(task) {
     const wrapper = document.createElement("div");
     wrapper.classList.add("tasktexttotheside");
 
+// creates the toggleable task button that will be empty until pressed then an X will be inside it and ads a strikethrough the text
     const newButton = document.createElement("button");
     newButton.textContent = task.completed ? "X" : "";
     newButton.classList.add("taskbutton");
@@ -50,6 +56,14 @@ function renderTask(task) {
     document.getElementById("buttonContainer").appendChild(wrapper);
 }
 
+// const newButton = document.getElementById("deletebutton")
+
+//     newButton.addEventListener("mouseover", fuction() {
+//     });
+//     newButton.addEventListener("mouseout", function() {
+//     })
+
+// saves those tasks inputed and the strikethough and X if clicked
 function saveTask(task) {
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     tasks.push(task);
@@ -70,6 +84,7 @@ function updateLocalStorage() {
         const completed = wrapper.querySelector("button").textContent === "X";
         tasks.push({ text, completed });
     });
+
 
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
